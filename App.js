@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import {NavigationContainer} from "@react-navigation/native";
+import {BottomTabs} from "./src/components/BottomTabs/BottomTabs";
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Это мобильное приложение YOOKING!</Text>
-      <StatusBar style="auto" />
+    <View>
+      <NavigationContainer>
+        <BottomTabs/>
+      </NavigationContainer>
+      <StatusBar />
     </View>
   );
 }
