@@ -1,7 +1,7 @@
 import {Text, View, StyleSheet} from "react-native";
 import {BottomTabs} from "../components/BottomTabs/BottomTabs";
 
-export const Search = () => {
+export const Search = ({navigation}) => {
     return (
         <View style={styles.blockList}>
             <View style={styles.header}>
@@ -11,7 +11,7 @@ export const Search = () => {
                 <Text>content</Text>
             </View>
             <View style={styles.footer}>
-                <BottomTabs/>
+                <BottomTabs navigation={navigation}/>
             </View>
         </View>
     )

@@ -3,11 +3,10 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {Feather} from '@expo/vector-icons';
 import {View, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {BLACK, GREY_BANNER, WHITE} from "../../theme/colors";
-import * as navigation from "expo-router/build/global-state/routing";
 import {useState} from "react";
 
 
-export const BottomTabs = () => {
+export const BottomTabs = ({navigation}) => {
     const [activeTab, setActiveTab] = useState('Поиск')
 
     const tabHandler = (screen) => {

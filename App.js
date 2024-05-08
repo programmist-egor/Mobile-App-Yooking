@@ -15,10 +15,10 @@ export default function App() {
             <Stack.Navigator
                 initialRouteName={"Поиск"}
             >
-                <Stack.Screen name="Поиск" component={Search}/>
-                <Stack.Screen name="Избранное" component={Favorite}/>
-                <Stack.Screen name="Поддержка" component={Support}/>
-                <Stack.Screen name="Профиль" component={Profile}/>
+                <Stack.Screen name="Поиск" component={Search} options={{ title: 'Поиск'}}/>
+                <Stack.Screen name="Избранное" component={Favorite} options={{ title: 'Избранное'}}/>
+                <Stack.Screen name="Поддержка" component={Support} options={{ title: 'Поддержка'}}/>
+                <Stack.Screen name="Профиль" component={Profile} options={{ title: 'Профиль'}}/>
             </Stack.Navigator>
         );
     }
