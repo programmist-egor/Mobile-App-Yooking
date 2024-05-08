@@ -1,5 +1,5 @@
 import {Text, View, StyleSheet} from "react-native";
-import {BottomTabs} from "../components/BottomTabs/BottomTabs";
+import {BottomTabs} from "../components/BottomTabs/BottomTabs.jsx";
 
 export const Search = ({navigation}) => {
     return (
