@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, View} from "react-native";
+import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {stylesText} from "../../styles/stylesText";
 import {stylesFlex} from "../../styles/stylesFlex";
 import {useEffect, useState} from "react";
@@ -11,10 +11,13 @@ import {
     showListSearchHandler
 } from "../../store/Search";
 import {BLACK, GREY, RED, WHITE} from "../../theme/colors";
-import {ListSearch} from "../ListSearch/ListSearch";
+import {ListSearch} from "../ListSearch/ListSearch.jsx";
 import {parseJSONPropertiesInArray} from "../../utils/json-parse-object";
 import ObjectService from "../../services/object.service";
 import {stylesMargin} from "../../styles/stylesMargin";
+import {wordDeclensionNight} from "../../utils/word-declensions";
+import {DataRange} from "../Calendar/DataRange.jsx";
+import DateRangeModal from "../DateRangeModal/DateRangeModal";
 
 export const SearchPanelMain = ({navigation}) => {
     const dispatch = useDispatch()
@@ -22,7 +25,7 @@ export const SearchPanelMain = ({navigation}) => {
     const [objectList, setObjectList] = useState([])
     const [filterData, setFilterData] = useState([])
     const [searchCity, setSearchCity] = useState(requestParameters.city.city || "")
-
+    const [isVisible, setIsVisible] = useState(false)
 
     const [checkOld, setCheckOld] = useState(false)
     const [openDataRang, setOpenDataRang] = useState(false)
@@ -34,23 +37,23 @@ export const SearchPanelMain = ({navigation}) => {
 
 
     //Загрузка объектов
-    const getObjectList = () => {
-        ObjectService.getAllObject()
-            .then(data => {
-                const parsedData = parseJSONPropertiesInArray(data);
-                setObjectList(parsedData);
-
-            })
-            .catch(error => {
-                console.log(error);
-            })
-
-    }
-    useEffect(() => {
-        if (objectList.length === 0) {
-            getObjectList()
-        }
-    }, []);
+    // const getObjectList = () => {
+    //     ObjectService.getAllObject()
+    //         .then(data => {
+    //             const parsedData = parseJSONPropertiesInArray(data);
+    //             setObjectList(parsedData);
+    //
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //         })
+    //
+    // }
+    // useEffect(() => {
+    //     if (objectList.length === 0) {
+    //         getObjectList()
+    //     }
+    // }, []);
 
 
     const handleClickOutsideGuestHotel = () => {
@@ -59,11 +62,13 @@ export const SearchPanelMain = ({navigation}) => {
         handlerOpenGuest();
     };
     const handlerDate = () => {
-        setOpenDataRang(!openDataRang)
-        dispatch(showCalendarHandler(!showCalendar))
+        setIsVisible(true)
+        // setOpenDataRang(!openDataRang)
+        // dispatch(showCalendarHandler(!showCalendar))
     }
     const handleClickOutsideDataRange = () => {
-        setOpenDataRang(false);
+        //setOpenDataRang(false);
+        setIsVisible(false)
         handlerDate();
     };
 
@@ -128,10 +133,10 @@ export const SearchPanelMain = ({navigation}) => {
     }
 
     return (
-        <View style={[stylesFlex.columnFSC, stylesMargin.ML_MR_10]}>
+        <View style={[stylesFlex.columnFSC, stylesMargin.ML_MR_15]}>
             <View style={styles.inputSearch}>
                 <TextInput
-                    style={styles.textInput}
+                    style={[styles.textInput]}
                     type="text"
                     id="search__input"
                     placeholder={"Введите название города"}
@@ -142,9 +147,8 @@ export const SearchPanelMain = ({navigation}) => {
                 />
                 {
                     showListSearch && (
-                        <div
-                            className="click-outside-modal-handler"
-                            onClick={handleClickOutsideListSearch}
+                        <View
+                            onPress={() => handleClickOutsideListSearch()}
                             style={{
                                 position: 'fixed',
                                 top: 0,
@@ -153,7 +157,7 @@ export const SearchPanelMain = ({navigation}) => {
                                 bottom: 0,
                                 zIndex: 1,
                             }}
-                        ></div>
+                        ></View>
                     )
                 }
                 <ListSearch
@@ -162,6 +166,33 @@ export const SearchPanelMain = ({navigation}) => {
                     handle={(type, value) => dataSearchHandler(type, value)}
                 />
             </View>
+            <TouchableOpacity style={[styles.inputSearch, stylesMargin.MT_10]} onPress={() => handlerDate()}>
+                <Text style={[styles.textDateRange, stylesFlex.rowCFS]}>
+                    {requestParameters.dataRange.checkIn} - {requestParameters.dataRange.checkOut} {requestParameters.dataRange.month}
+                    <Text style={styles.textCountNight}> - {requestParameters.dataRange.countNight} {wordDeclensionNight(requestParameters.dataRange.countNight)}</Text>
+                </Text>
+                {
+                    openDataRang && (
+                        <View
+                            onPress={handleClickOutsideDataRange}
+                            style={{
+                                position: 'fixed',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                zIndex: 1,
+                            }}
+                        ></View>
+                    )
+                }
+                <DataRange
+                    style={showCalendar ? styles.modalListSearch : styles.modalNone}
+                    handle={(type, value) => dataSearchHandler(type, value)}
+                    page={"search"}
+                />
+            </TouchableOpacity>
+            <DateRangeModal isVisible={isVisible} onClose={() => setIsVisible(false)}/>
         </View>
     )
 }
@@ -173,11 +204,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         border: "none",
         outline: "none",
-        backgroundColor: false
+        backgroundColor: false,
+        width: "100%",
     },
     modalListSearch: {
         position: "absolute",
-        top: 0,
+        top: 35,
         left: 0,
         height: "5%",
         width: "100%",
@@ -193,9 +225,19 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 40,
         borderRadius: 5,
-        borderBottom: "red",
-        borderWidth: 3,
-
+        borderBottomColor: GREY,
+        borderWidth: 1,
+    },
+    textDateRange: {
+        color: WHITE,
+        fontSize: 14,
+        fontWeight: "bold",
+        marginTop: 10,
+        paddingLeft: 10
+    },
+    textCountNight: {
+        color: GREY,
+        fontSize: 14,
     }
 })
 

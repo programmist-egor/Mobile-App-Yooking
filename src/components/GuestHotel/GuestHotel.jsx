@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Button } from '../../UI Elements/Button/Button';
+import { Button } from '../../UI Elements/Button/Button.jsx';
 import { useDispatch } from 'react-redux';
 import {
     handlerAddChild,
@@ -9,7 +9,7 @@ import {
     handlerDelGuest,
     handlerEditOldChild
 } from "../../store/Search";
-import {ButtonCounter} from "../../UI Elements/ButtonCounter/ButtonCounter";
+import {ButtonCounter} from "../../UI Elements/ButtonCounter/ButtonCounter.jsx";
 import {stylesFlex} from "../../styles/stylesFlex";
 import {stylesText} from "../../styles/stylesText";
 

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView} from 'react-native';
 import {dateFormater, dayMonth} from '../../utils/dataFormater';
 import {useDispatch} from 'react-redux';
-import  * as dataRange from "../../store/HotelItem";
+import * as dataRange from "../../store/HotelItem";
 import {checkInDateHandler, handlerDataRange, checkOutDateHandler} from '../../store/dataBooking';
 
 export const DataRange = ({style, handle, page}) => {
@@ -283,18 +283,18 @@ export const DataRange = ({style, handle, page}) => {
                     </View>
                 </View>
                 <View style={styles.calendarBody}>
-                    <View style={styles.months}>
+                    <ScrollView style={styles.months}>
                         {monthsList.map((month, index) => (
                             <View key={index} style={styles.monthContainer}>
                                 <View style={styles.monthLabel}>
-                                    <Text>{month.name} {month.year}</Text>
+                                    <Text style={styles.monthLabel}>{month.name} {month.year}</Text>
                                 </View>
                                 <View style={styles.monthGrid}>
                                     {renderMonthDays(month)}
                                 </View>
                             </View>
                         ))}
-                    </View>
+                    </ScrollView>
                 </View>
                 <View style={{padding: 5, height: 14}}>
                     <Text style={styles.message}>{message}</Text>
@@ -322,9 +322,9 @@ const styles = StyleSheet.create({
     day: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 30,
-        height: 30,
-        borderRadius: 15,
+        width: 50,
+        height: 50,
+        borderRadius: "50%",
         cursor: 'pointer',
         color: '#333',
     },
@@ -387,28 +387,35 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     calendarHeader: {
-        padding: 16,
+        padding: 0,
+        width: '100%',
+
+
     },
     weekdays: {
+        width: '100%',
+        height: 30,
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: "center",
         backgroundColor: '#fff',
     },
     weekdaysText: {
-        width: 24,
+
         textAlign: 'center',
         color: '#808080',
     },
     calendarBody: {
-        padding: 8,
+        padding: 4,
     },
     monthContainer: {
         borderRadius: 4,
         backgroundColor: '#fff',
-        overflow: 'hidden',
+        overflow: "hidden",
+        marginBottom: 20
     },
     monthLabel: {
-        padding: 8,
+        padding: 6,
         fontSize: 16,
         fontWeight: 'bold',
         color: '#fff',
@@ -418,6 +425,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-around',
-        padding: 6,
+        padding: 10,
     },
+    months: {
+        height: 140 * 3,
+        width: "100%",
+        paddingRight: 10,
+    }
 });

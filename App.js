@@ -6,8 +6,8 @@ import {Search} from "./src/screen/Search.jsx";
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider} from "react-redux";
 import store from './src/store/index';
-import {Registration} from "./src/screen/Registration";
-import {Login} from "./src/screen/Login";
+import {Registration} from "./src/screen/Registration.jsx";
+import {Login} from "./src/screen/Login.jsx";
 
 export default function App() {
     const Stack = createStackNavigator();

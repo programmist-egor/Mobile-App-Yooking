@@ -1,8 +1,8 @@
 import {Text, View, StyleSheet, StatusBar} from "react-native";
 import {BottomTabs} from "../components/BottomTabs/BottomTabs.jsx";
 import {BLACK, WHITE} from "../theme/colors";
-import {HeaderMain} from "../UI Elements/HeaderMain/HeaderMain";
-import {SearchPanelMain} from "../components/SearchPanelMain/SearchPanelMain";
+import {HeaderMain} from "../UI Elements/HeaderMain/HeaderMain.jsx";
+import {SearchPanelMain} from "../components/SearchPanelMain/SearchPanelMain.jsx";
 
 export const Search = ({navigation}) => {
     return (
