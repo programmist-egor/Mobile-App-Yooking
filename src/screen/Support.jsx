@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import {BottomTabs} from "../components/BottomTabs/BottomTabs";
+import {BottomTabs} from "../components/BottomTabs/BottomTabs.jsx";
 import {BLACK} from "../theme/colors";
 
 export const Support = ({navigation}) => {
