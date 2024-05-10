@@ -1,3 +1,5 @@
+import {StyleSheet} from "react-native"
+
 export const stylesFlex = StyleSheet.create({
     rowCC: {
         flexDirection: 'row',

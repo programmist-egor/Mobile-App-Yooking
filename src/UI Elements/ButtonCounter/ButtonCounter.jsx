@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Icon24MinusOutline, Icon24Add } from '@vkontakte/icons';
+import { Ionicons } from '@expo/vector-icons';
 import { BLACK, GREY_WHITE } from '../../theme/colors';
 
 export const ButtonCounter = ({ count, style, handleDel, handleAdd }) => {
     return (
         <View style={style}>
             <TouchableOpacity onPress={handleDel} style={styles.buttonContainer}>
-                <Icon24MinusOutline width={16} height={16} fill={BLACK} />
+                <Ionicons name="remove-circle-outline" size={16} color="black" />
             </TouchableOpacity>
             <Text style={styles.text}>{count}</Text>
             <TouchableOpacity onPress={handleAdd} style={styles.buttonContainer}>
-                <Icon24Add width={16} height={16} fill={BLACK} />
+                <Ionicons name="add-circle-outline" size={16} color="black" />
             </TouchableOpacity>
         </View>
     );

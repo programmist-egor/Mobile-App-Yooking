@@ -1,3 +1,5 @@
+import {StyleSheet} from "react-native"
+
 export const stylesText = StyleSheet.create({
     headerBannerWhiteB48: {
         color: '#FFF',

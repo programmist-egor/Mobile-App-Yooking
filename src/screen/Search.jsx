@@ -2,9 +2,9 @@ import {Text, View, StyleSheet, StatusBar} from "react-native";
 import {BottomTabs} from "../components/BottomTabs/BottomTabs.jsx";
 import {BLACK, WHITE} from "../theme/colors";
 import {HeaderMain} from "../UI Elements/HeaderMain/HeaderMain";
+import {SearchPanelMain} from "../components/SearchPanelMain/SearchPanelMain";
 
 export const Search = ({navigation}) => {
-
     return (
         <View style={styles.blockList}>
             <StatusBar style="light"/>
@@ -12,7 +12,7 @@ export const Search = ({navigation}) => {
                 <HeaderMain/>
             </View>
             <View style={styles.content}>
-                <Text style={{color: WHITE}}> - 100000000</Text>
+                <SearchPanelMain navigation={navigation}/>
             </View>
             <View style={styles.footer}>
                 <BottomTabs navigation={navigation}/>

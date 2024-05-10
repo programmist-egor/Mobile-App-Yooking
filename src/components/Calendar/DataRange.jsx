@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {dateFormater, dayMonth} from '../../utils/dataFormater';
 import {useDispatch} from 'react-redux';
-import * as dataRange from '../../store/HotelItem';
+import  * as dataRange from "../../store/HotelItem";
 import {checkInDateHandler, handlerDataRange, checkOutDateHandler} from '../../store/dataBooking';
 
 export const DataRange = ({style, handle, page}) => {
@@ -326,7 +326,6 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 15,
         cursor: 'pointer',
-        userSelect: 'none',
         color: '#333',
     },
     weekend: {
