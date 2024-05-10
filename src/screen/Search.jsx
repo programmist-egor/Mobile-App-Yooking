@@ -1,14 +1,18 @@
-import {Text, View, StyleSheet} from "react-native";
+import {Text, View, StyleSheet, StatusBar} from "react-native";
 import {BottomTabs} from "../components/BottomTabs/BottomTabs.jsx";
+import {BLACK, WHITE} from "../theme/colors";
+import {HeaderMain} from "../UI Elements/HeaderMain/HeaderMain";
 
 export const Search = ({navigation}) => {
+
     return (
         <View style={styles.blockList}>
+            <StatusBar style="light"/>
             <View style={styles.header}>
-                <Text>header</Text>
+                <HeaderMain/>
             </View>
             <View style={styles.content}>
-                <Text>content</Text>
+                <Text style={{color: WHITE}}> - 100000000</Text>
             </View>
             <View style={styles.footer}>
                 <BottomTabs navigation={navigation}/>
@@ -21,10 +25,12 @@ const styles = StyleSheet.create({
     blockList: {
         flex: 1,
         flexDirection: 'column',
-        height: '100%'
+        height: '100%',
+        backgroundColor: BLACK
     },
     header: {
-        flex: 0
+        flex: 0,
+        marginTop: 20
     },
     content: {
         flex: 1
