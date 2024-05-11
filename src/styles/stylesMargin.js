@@ -61,4 +61,16 @@ export const stylesMargin = StyleSheet.create({
     MB_15: {
         marginBottom: 15,
     },
+    MT_MB_5: {
+        marginTop: 5,
+        marginBottom: 5,
+    },
+    MT_MB_10: {
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    MT_MB_15: {
+        marginTop: 15,
+        marginBottom: 15,
+    },
 });

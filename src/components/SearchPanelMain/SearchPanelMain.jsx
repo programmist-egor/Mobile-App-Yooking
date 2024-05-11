@@ -1,7 +1,7 @@
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TextInput, TouchableOpacity, View, Keyboard, TouchableWithoutFeedback} from "react-native";
 import {stylesText} from "../../styles/stylesText";
 import {stylesFlex} from "../../styles/stylesFlex";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
     cityOrHotelHandler,
@@ -16,8 +16,9 @@ import {parseJSONPropertiesInArray} from "../../utils/json-parse-object";
 import ObjectService from "../../services/object.service";
 import {stylesMargin} from "../../styles/stylesMargin";
 import {wordDeclensionNight} from "../../utils/word-declensions";
-import {DataRange} from "../Calendar/DataRange.jsx";
 import DateRangeModal from "../DateRangeModal/DateRangeModal";
+import axios from "axios";
+
 
 export const SearchPanelMain = ({navigation}) => {
     const dispatch = useDispatch()
@@ -37,23 +38,39 @@ export const SearchPanelMain = ({navigation}) => {
 
 
     //Загрузка объектов
-    // const getObjectList = () => {
-    //     ObjectService.getAllObject()
-    //         .then(data => {
-    //             const parsedData = parseJSONPropertiesInArray(data);
-    //             setObjectList(parsedData);
-    //
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         })
-    //
-    // }
-    // useEffect(() => {
-    //     if (objectList.length === 0) {
-    //         getObjectList()
-    //     }
-    // }, []);
+    const getObjectList = () => {
+        ObjectService.getAllObject()
+            .then(data => {
+                const parsedData = parseJSONPropertiesInArray(data);
+                setObjectList(parsedData);
+
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+    }
+
+
+    const fetchData = async () => {
+        fetch('http://localhost:5005/obj')
+            .then((response) => response.json())
+            .then((json) => {
+                console.log("json",json);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    };
+
+    useEffect(() => {
+        if (objectList.length === 0) {
+            getObjectList()
+        }
+        fetchData()
+    }, []);
+    console.log("objectList",objectList);
+
 
 
     const handleClickOutsideGuestHotel = () => {
@@ -63,13 +80,9 @@ export const SearchPanelMain = ({navigation}) => {
     };
     const handlerDate = () => {
         setIsVisible(true)
-        // setOpenDataRang(!openDataRang)
-        // dispatch(showCalendarHandler(!showCalendar))
     }
     const handleClickOutsideDataRange = () => {
-        //setOpenDataRang(false);
         setIsVisible(false)
-        handlerDate();
     };
 
     const handlerOpenGuest = () => {
@@ -88,10 +101,11 @@ export const SearchPanelMain = ({navigation}) => {
     }
 
     const handlerText = (e) => {
-        if (e.target.value !== "") {
+        console.log("TEXT", e);
+        if (e !== "") {
             dispatch(showListSearchHandler(true));
-            const searchText = e.target.value.toLocaleLowerCase();
-            setSearchCity(e.target.value);
+            const searchText = e.toLocaleLowerCase();
+            setSearchCity(e);
             if (searchText.length !== 0) {
                 // Фильтруем userData по имени, фамилии, телефону или email
                 const filteredCity = objectList.filter(item => {
@@ -127,72 +141,38 @@ export const SearchPanelMain = ({navigation}) => {
             handleClickOutsideListSearch(value.city)
         }
         if (type === "DataRange") {
-            dispatch(handlerDataRange(value))
-            handlerDate()
+            handleClickOutsideDataRange()
         }
     }
+
 
     return (
         <View style={[stylesFlex.columnFSC, stylesMargin.ML_MR_15]}>
             <View style={styles.inputSearch}>
                 <TextInput
                     style={[styles.textInput]}
-                    type="text"
+                    inputMode="text"
                     id="search__input"
                     placeholder={"Введите название города"}
                     value={searchCity}
-                    onChangeText={handlerText}
+                    onChangeText={text => handlerText(text)}
                     required={true}
-
                 />
-                {
-                    showListSearch && (
-                        <View
-                            onPress={() => handleClickOutsideListSearch()}
-                            style={{
-                                position: 'fixed',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                zIndex: 1,
-                            }}
-                        ></View>
-                    )
-                }
                 <ListSearch
                     style={showListSearch ? styles.modalListSearch : styles.modalNone}
                     city={filterData}
                     handle={(type, value) => dataSearchHandler(type, value)}
                 />
             </View>
-            <TouchableOpacity style={[styles.inputSearch, stylesMargin.MT_10]} onPress={() => handlerDate()}>
+            <TouchableOpacity style={[styles.inputSearch, stylesMargin.MT_10, {zIndex: 10}]} onPress={() => handlerDate()}>
                 <Text style={[styles.textDateRange, stylesFlex.rowCFS]}>
                     {requestParameters.dataRange.checkIn} - {requestParameters.dataRange.checkOut} {requestParameters.dataRange.month}
-                    <Text style={styles.textCountNight}> - {requestParameters.dataRange.countNight} {wordDeclensionNight(requestParameters.dataRange.countNight)}</Text>
+                    <Text
+                        style={styles.textCountNight}> - {requestParameters.dataRange.countNight} {wordDeclensionNight(requestParameters.dataRange.countNight)}</Text>
                 </Text>
-                {
-                    openDataRang && (
-                        <View
-                            onPress={handleClickOutsideDataRange}
-                            style={{
-                                position: 'fixed',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                zIndex: 1,
-                            }}
-                        ></View>
-                    )
-                }
-                <DataRange
-                    style={showCalendar ? styles.modalListSearch : styles.modalNone}
-                    handle={(type, value) => dataSearchHandler(type, value)}
-                    page={"search"}
-                />
             </TouchableOpacity>
-            <DateRangeModal isVisible={isVisible} onClose={() => setIsVisible(false)}/>
+            <DateRangeModal isVisible={isVisible} onClose={() => setIsVisible(false)}
+                            dataSearchHandler={(type) => dataSearchHandler(type)} page={"search"}/>
         </View>
     )
 }
@@ -209,9 +189,9 @@ const styles = StyleSheet.create({
     },
     modalListSearch: {
         position: "absolute",
-        top: 35,
+        top: 10,
         left: 0,
-        height: "5%",
+        height: 300,
         width: "100%",
         zIndex: 10000,
     },
@@ -227,13 +207,15 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderBottomColor: GREY,
         borderWidth: 1,
+        zIndex: 1000,
     },
     textDateRange: {
         color: WHITE,
         fontSize: 14,
         fontWeight: "bold",
         marginTop: 10,
-        paddingLeft: 10
+        paddingLeft: 10,
+        zIndex: 1000,
     },
     textCountNight: {
         color: GREY,

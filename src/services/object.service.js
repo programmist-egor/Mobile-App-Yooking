@@ -4,7 +4,7 @@ import {$api} from "../http"
 const ObjectService = {
     getAllObject: async () => {
         try {
-            const response = await $api.get(`/`);
+            const response = await $api.get(`/obj`);
             console.log("response.data",response.data);
             return response.data;
         } catch (error) {

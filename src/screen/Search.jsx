@@ -1,23 +1,30 @@
-import {Text, View, StyleSheet, StatusBar} from "react-native";
+import {Text, View, StyleSheet, StatusBar, TouchableWithoutFeedback, Keyboard} from "react-native";
 import {BottomTabs} from "../components/BottomTabs/BottomTabs.jsx";
 import {BLACK, WHITE} from "../theme/colors";
 import {HeaderMain} from "../UI Elements/HeaderMain/HeaderMain.jsx";
 import {SearchPanelMain} from "../components/SearchPanelMain/SearchPanelMain.jsx";
 
 export const Search = ({navigation}) => {
+    const handleEndEditing = () => {
+        Keyboard.dismiss(); // Скрывает клавиатуру
+    };
+
+
     return (
-        <View style={styles.blockList}>
-            <StatusBar style="light"/>
-            <View style={styles.header}>
-                <HeaderMain/>
+        <TouchableWithoutFeedback onPress={() => handleEndEditing()}>
+            <View style={styles.blockList}>
+                <StatusBar style="light"/>
+                <View style={styles.header}>
+                    <HeaderMain/>
+                </View>
+                <View style={styles.content}>
+                    <SearchPanelMain navigation={navigation}/>
+                </View>
+                <View style={styles.footer}>
+                    <BottomTabs navigation={navigation}/>
+                </View>
             </View>
-            <View style={styles.content}>
-                <SearchPanelMain navigation={navigation}/>
-            </View>
-            <View style={styles.footer}>
-                <BottomTabs navigation={navigation}/>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     )
 }
 
